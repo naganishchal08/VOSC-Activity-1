@@ -1,0 +1,228 @@
+/* Modern CSS Reset & Custom Properties */
+:root {
+  --bg-gradient: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+  --surface-bg: rgba(30, 41, 59, 0.7);
+  --surface-border: rgba(255, 255, 255, 0.08);
+  --cell-bg: #1e293b;
+  --cell-hover: #334155;
+  --cell-border: rgba(255, 255, 255, 0.1);
+  --text-main: #f8fafc;
+  --text-muted: #94a3b8;
+  --color-x: #38bdf8;       /* Electric Sky Blue */
+  --color-x-glow: rgba(56, 189, 248, 0.35);
+  --color-o: #f43f5e;       /* Vibrant Rose */
+  --color-o-glow: rgba(244, 63, 94, 0.35);
+  --color-win: #10b981;     /* Emerald Win Accent */
+  --color-win-bg: rgba(16, 185, 129, 0.15);
+  --btn-bg: #2563eb;
+  --btn-hover: #1d4ed8;
+  --btn-text: #ffffff;
+  --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.4), 0 8px 10px -6px rgba(0, 0, 0, 0.3);
+  --radius-lg: 20px;
+  --radius-md: 14px;
+  --radius-sm: 8px;
+  --font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: var(--bg-gradient);
+  font-family: var(--font-family);
+  color: var(--text-main);
+  padding: 1.5rem;
+}
+
+/* Container Card */
+.game-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.75rem;
+  width: 100%;
+  max-width: 440px;
+  padding: 2.25rem 2rem;
+  background: var(--surface-bg);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--surface-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+}
+
+/* Header & Status */
+.game-header {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  width: 100%;
+}
+
+.game-title {
+  font-size: clamp(1.8rem, 5vw, 2.4rem);
+  font-weight: 800;
+  letter-spacing: -0.025em;
+  background: linear-gradient(135deg, #ffffff 40%, #94a3b8 100%);
+  background-clip: text;                  /* Standard property */
+  -webkit-background-clip: text;          /* Vendor-prefixed with leading '-' */
+  -webkit-text-fill-color: transparent;
+}
+
+.status-display {
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  min-height: 1.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35rem;
+  transition: color 0.2s ease;
+}
+
+.player-indicator {
+  font-weight: 800;
+  padding: 0 0.2rem;
+  font-size: 1.25rem;
+}
+
+.player-indicator.player-x {
+  color: var(--color-x);
+  text-shadow: 0 0 10px var(--color-x-glow);
+}
+
+.player-indicator.player-o {
+  color: var(--color-o);
+  text-shadow: 0 0 10px var(--color-o-glow);
+}
+
+/* 3x3 Game Board */
+.game-board {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.75rem;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+}
+
+/* Board Cells */
+.cell {
+  background-color: var(--cell-bg);
+  border: 1px solid var(--cell-border);
+  border-radius: var(--radius-md);
+  font-size: clamp(2.5rem, 8vw, 3.5rem);
+  font-weight: 800;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  user-select: none;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2);
+  line-height: 1;
+}
+
+.cell:hover:not(:disabled) {
+  background-color: var(--cell-hover);
+  transform: translateY(-2px);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.cell:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.cell:focus-visible {
+  outline: 2px solid var(--color-x);
+  outline-offset: 3px;
+}
+
+.cell:disabled {
+  cursor: not-allowed;
+}
+
+/* Distinct Player Marker Styling */
+.cell.x {
+  color: var(--color-x);
+  text-shadow: 0 0 15px var(--color-x-glow);
+  animation: popIn 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.cell.o {
+  color: var(--color-o);
+  text-shadow: 0 0 15px var(--color-o-glow);
+  animation: popIn 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+/* Highlight Winning Cells */
+.cell.win {
+  background-color: var(--color-win-bg) !important;
+  border-color: var(--color-win) !important;
+  box-shadow: 0 0 18px rgba(16, 185, 129, 0.4);
+  animation: winPulse 1.2s infinite alternate;
+}
+
+/* Controls */
+.game-controls {
+  width: 100%;
+}
+
+.restart-btn {
+  width: 100%;
+  padding: 0.85rem 1.5rem;
+  font-size: 1rem;
+  font-weight: 600;
+  font-family: inherit;
+  color: var(--btn-text);
+  background-color: var(--btn-bg);
+  border: none;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.15s ease, box-shadow 0.2s ease;
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+}
+
+.restart-btn:hover {
+  background-color: var(--btn-hover);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px rgba(37, 99, 235, 0.4);
+}
+
+.restart-btn:active {
+  transform: translateY(0);
+}
+
+.restart-btn:focus-visible {
+  outline: 2px solid #60a5fa;
+  outline-offset: 3px;
+}
+
+/* Keyframe Animations */
+@keyframes popIn {
+  0% {
+    transform: scale(0.6);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes winPulse {
+  0% {
+    transform: scale(1);
+  }
+  100% {
+    transform: scale(1.03);
+  }
+}
